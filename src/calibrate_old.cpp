@@ -26,20 +26,16 @@ int e_offset = END_OFFSET;
 int skip_frame = FRAME_SKIP;
 
 void extractImagePoints(int board_width, int board_height,
-			float square_size, char* image_directory_left, char* image_directory_right,
+			float square_size, char* image_directory,
 			int verb_disp)
 {
     Size board_size = Size(board_width,board_height);
     int board_n = board_width * board_height;
    
-    vector<String> image_filenames_left;
-    vector<String> image_filenames_right;
-
-    glob(image_directory_left, image_filenames_left);
-    glob(image_directory_right, image_filenames_right);
-
-    if (image_filenames_left.size() > 0 && image_filenames_right.size() > 0)
-        std::cout << "Identified " << image_filenames_left.size() << " images." << std::endl << std::endl;
+    vector<String> image_filenames;
+    glob(image_directory,image_filenames);
+    if (image_filenames.size() > 0)
+        std::cout << "Identified " << image_filenames.size() << " images." << std::endl << std::endl;
     else 
     {
         std::cout << "Could not identify any images. Check calibration image path and try again." << std::endl << std::endl;
@@ -48,15 +44,25 @@ void extractImagePoints(int board_width, int board_height,
     int valid_stereo=0;
 
     if (verb_disp) {
-        cv::namedWindow("left");
-        cv::namedWindow("right");
+        cv::namedWindow("cam1");
+        cv::namedWindow("cam2");
     }
 
-    for (int im_ctr = s_offset; im_ctr < image_filenames_left.size() - e_offset; im_ctr += skip_frame) 
+    for (int im_ctr = s_offset; im_ctr < image_filenames.size() - e_offset; im_ctr += skip_frame) 
     {
-        std::cout << "Here:" << std::endl;
-        cv::Mat cam1_image = imread(image_filenames_left[im_ctr],0);
-        cv::Mat cam2_image = imread(image_filenames_right[im_ctr],0);
+        cv::Mat full_image = imread(image_filenames[im_ctr],0);
+
+	cv::Mat cam1_image, cam2_image;
+
+	cv::Rect cam1_roi(0,1*IMG_HEIGHT,IMG_WIDTH,IMG_HEIGHT);
+	cv::Rect cam2_roi(0,2*IMG_HEIGHT,IMG_WIDTH,IMG_HEIGHT);
+
+	cam1_image = full_image(cam1_roi);
+	cam2_image = full_image(cam2_roi);
+
+	//cv::imshow("Left",cam1_image);
+	//cv::imshow("Right",cam2_image);
+	//cv::waitKey(0);
 
 	image_size = cam1_image.size();
 
@@ -101,8 +107,8 @@ void extractImagePoints(int board_width, int board_height,
 		double sf = 240./MAX(cam1_image.rows, cam1_image.cols);
 		cv::resize(cimg1, cimg1_r, Size(), sf, sf);
 		cv::resize(cimg2, cimg2_r, Size(), sf, sf);
-		cv::imshow("left",cimg1_r);
-		cv::imshow("right",cimg2_r);
+		cv::imshow("cam1",cimg1_r);
+		cv::imshow("cam2",cimg2_r);
 	        cv::waitKey(50);
 	    }
 
@@ -113,8 +119,8 @@ void extractImagePoints(int board_width, int board_height,
     }
     
     if (verb_disp) {
-        cv::destroyWindow("left");
-        cv::destroyWindow("right");
+        cv::destroyWindow("cam1");
+        cv::destroyWindow("cam2");
     }
     std::cout << std::endl; 
     std::cout << "Detected " << valid_stereo << " pairs for calibration." << std::endl;
@@ -142,13 +148,11 @@ int main(int argc, char const *argv[])
 
     int board_width, board_height;
     float square_size;
-    char* image_directory_left;
-    char* image_directory_right;
+    char* image_directory;
     int verb_disp;
 
     static struct poptOption options[] = {
-    { "img_dir_l",'l',POPT_ARG_STRING,&image_directory_left,0,"Directory containing images","STR" },
-    { "img_dir_r",'r',POPT_ARG_STRING,&image_directory_right,0,"Directory containing images","STR" },
+    { "img_dir",'d',POPT_ARG_STRING,&image_directory,0,"Directory containing images","STR" },
     POPT_AUTOHELP
     { NULL, 0, 0, NULL, 0, NULL, NULL }
     };
@@ -164,7 +168,7 @@ int main(int argc, char const *argv[])
 
     std::cout << "BW : " << board_width << " BH : " << board_height << " SS : " << square_size << " VD : " << verb_disp << std::endl;
 
-    extractImagePoints(board_width,board_height,square_size,image_directory_left,image_directory_right,verb_disp);
+    extractImagePoints(board_width,board_height,square_size,image_directory,verb_disp);
 
     std::cout << std::endl << "Image points have been extracted. " << std::endl << std::endl;
 

@@ -7,15 +7,15 @@
 #define IMG_HEIGHT	1024
 #define FLIP_FLAG	0
 
-#define START_OFFSET	100
-#define END_OFFSET	100
-#define FRAME_SKIP	20
+#define START_OFFSET	10
+#define END_OFFSET	10
+#define FRAME_SKIP	15
 
 #define BOARD_WIDTH	9
 #define BOARD_HEIGHT	6
 #define SQUARE_SIZE	0.0225
 #define VERBOSITY_FLAG	1
 
-std::string paramFile = "/home/nvidia/stereo_calib/data/calibration_file.yml";
+std::string paramFile = "/home/nvidia/nov15_calib/calibration_file.yml";
 
 #endif
