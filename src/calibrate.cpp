@@ -189,7 +189,7 @@ int main(int argc, char const *argv[])
 			        cv::TermCriteria(3, 12, 0));
     cv::Mat R1_b1, R2_b1, P1_b1, P2_b1, Q_b1;
     cv::fisheye::stereoRectify(K1_b1, D1_b1, K2_b1, D2_b1, image_size, R_b1, T_b1, R1_b1, R2_b1, 
-				P1_b1, P2_b1, Q_b1, CV_CALIB_ZERO_DISPARITY, image_size, 0.0, 1.1);
+				P1_b1, P2_b1, Q_b1, CV_CALIB_ZERO_DISPARITY, image_size, 0.0, 1.0);
 
     std::cout << "Saving parameter files.." << std::endl << std::endl;
     
