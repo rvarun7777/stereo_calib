@@ -1,0 +1,15 @@
+%YAML:1.0
+camera_matrix: !!opencv-matrix
+  cols: 3
+  data: [605.951, 0.0, 489.06, 0.0, 606.235, 395.696, 0.0, 0.0, 1.0]
+  dt: d
+  rows: 3
+camera_name: /sync/cam0/image_raw
+distortion_coefficients: !!opencv-matrix
+  cols: 4
+  data: [-0.0170728, -0.000667979, 0.00558404, -0.0072392]
+  dt: d
+  rows: 1
+distortion_model: equidistant
+image_height: 800
+image_width: 960

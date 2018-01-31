@@ -1,0 +1,26 @@
+%YAML:1.0
+camera_matrix: !!opencv-matrix
+  cols: 3
+  data: [608.488, 0.0, 477.0, 0.0, 608.405, 395.956, 0.0, 0.0, 1.0]
+  dt: d
+  rows: 3
+camera_name: /sync/cam1/image_raw
+distortion_coefficients: !!opencv-matrix
+  cols: 4
+  data: [-0.0187052, 0.00766324, -0.010735, 0.0033308]
+  dt: d
+  rows: 1
+distortion_model: equidistant
+image_height: 800
+image_width: 960
+rotation_01: !!opencv-matrix
+  cols: 3
+  data: [0.99998088741, 0.00089414894, 0.0061176226, -0.00093803692, 0.99997381995,
+    0.00717492224, -0.00611104699, -0.00718052367, 0.9999555466]
+  dt: d
+  rows: 3
+translation_01: !!opencv-matrix
+  cols: 1
+  data: [-0.19979628127, 0.00077031191, -9.398997e-05]
+  dt: d
+  rows: 3
